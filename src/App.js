@@ -1,14 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import Game from './components/Game.js';
+import React, { useEffect, useState } from 'react';
+import ajax from './ajax';
+
+import { Text, StyleSheet } from 'react-native';
+import DealList from './components/DealList';
 
 export default function App() {
+  const [deals, setdeals] = useState([]);
+  const [dealInfo, setdealInfo] = useState(null);
 
-  const [gameId, setgameId] = useState(0);
-  console.log(gameId);
+
+  console.log(dealInfo);
+
+  useEffect(() => {
+    (async function () {
+      const deals = await ajax.getMoviesFromApi();
+      setdeals(deals);
+    })();
+    //getdata();
+  }, [])
+
+
+  console.log(deals);
 
   return (
-    <Game itemsNumber={6} timeLevel={10} key={gameId} setgameId={setgameId} />
+    deals.length ? <DealList deals={deals} setdealInfo={setdealInfo} dealInfo={dealInfo} /> : <Text>Loading</Text>
   );
 }
 

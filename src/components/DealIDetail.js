@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, Button } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, PanResponder, Animated, Button } from 'react-native';
 
 import ajax from '../ajax';
 import PropTypes from 'prop-types';
@@ -8,6 +8,51 @@ import PropTypes from 'prop-types';
 function DealIDetail({ item, setdealInfo }) {
 
     const [detail, setdetail] = useState({});
+    const [imageIndex, setimageIndex] = useState(0);
+
+    const imageXpos = useRef(new Animated.Value(0)).current;
+    let width = Dimensions.get("window").width;
+
+    const panResponder = React.useRef(
+        PanResponder.create({
+            // Ask to be the responder:
+            onStartShouldSetPanResponder: (evt, gs) => true,
+            onPanResponderMove: (evt, gs) => {
+                imageXpos.setValue(gs.dx);
+            },
+            onPanResponderRelease: (evt, gs, imageIndex) => {
+                if (Math.abs(gs.dx) > width * 0.4) {
+                    let dir = Math.sign(gs.dx);
+                    Animated.timing(imageXpos, {
+                        toValue: dir * width,
+                        duration: 250,
+                    }).start(() => handelSwip(dir * -1));
+                } else {
+                    Animated.spring(imageXpos, {
+                        toValue: 0,
+                    }).start();
+                }
+            },
+        })
+    ).current;
+    let counter = 0;
+
+
+    function handelSwip(idxDir) {
+        if (((idxDir > 0) && counter + 1 === 3) || ((idxDir < 0) && counter - 1 < 0)) {
+            Animated.spring(imageXpos, {
+                toValue: 0,
+            }).start();
+            return;
+        }
+        setimageIndex(prev => prev + idxDir);
+        imageXpos.setValue(width * idxDir);
+        Animated.spring(imageXpos, {
+            toValue: 0,
+        }).start();
+        if (idxDir < 0) counter--;
+        if (idxDir > 0) counter++;
+    }
 
     useEffect(() => {
         (async function () {
@@ -26,9 +71,14 @@ function DealIDetail({ item, setdealInfo }) {
                         title="Back"
                     />
                 </TouchableOpacity>
-                <Image
-                    style={styles.image}
-                    source={{ uri: item.media[0] }}
+                <Animated.Image
+                    style={[styles.image,
+                    {
+                        left: imageXpos
+                    }
+                    ]}
+                    source={{ uri: item.media[imageIndex] }}
+                    {...panResponder.panHandlers}
                 />
                 <View style={styles.info}>
                     <Text style={styles.title}>{item.title}</Text>
@@ -59,7 +109,7 @@ DealIDetail.propTypes = {
 
 const styles = StyleSheet.create({
     container: {
-        width: "80%",
+        width: "100%",
         margin: "auto",
         marginVertical: 5,
 

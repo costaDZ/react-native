@@ -14,23 +14,20 @@ export default function App() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
 
-  function animateTitle() {
-    while (!deals.length) {
-      Animated.spring(fadeAnim, {
-        toValue: 50,
-        duration: 1000
-      }).start(() => {
-        fadeAnim, {
-          toValue: -50,
-          duration: 1000
-        }
-      });
-    }
-
-  }
+  // function animateTitle() {
+  //     Animated.spring(fadeAnim, {
+  //       toValue: 50,
+  //       duration: 1000
+  //     }).start(() => {
+  //       fadeAnim, {
+  //         toValue: -50,
+  //         duration: 1000
+  //       }
+  //     });
+  // }
 
   useEffect(() => {
-    animateTitle();
+    //animateTitle();
 
     (async function () {
       const deals = await ajax.getMoviesFromApi();

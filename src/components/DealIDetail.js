@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Button } from 'react-native';
 
 import ajax from '../ajax';
+import PropTypes from 'prop-types';
 
 
-function DealIDetail({ item }) {
+function DealIDetail({ item, setdealInfo }) {
 
     const [detail, setdetail] = useState({});
 
@@ -16,19 +17,15 @@ function DealIDetail({ item }) {
         })();
     }, []);
 
-
-
-    console.log(detail);
-
-
-
-
-
-
-
     return (
         <>
             <View style={styles.container}>
+                <TouchableOpacity >
+                    <Button
+                        onPress={() => setdealInfo(null)}
+                        title="Back"
+                    />
+                </TouchableOpacity>
                 <Image
                     style={styles.image}
                     source={{ uri: item.media[0] }}
@@ -44,29 +41,26 @@ function DealIDetail({ item }) {
             {
                 detail.user
                 &&
-                <View>
+                <View style={styles.useInfo}>
                     <Image source={{ uri: detail.user.avatar }} style={styles.avatar} />
                     <Text style={styles.name}>{detail.user.name}</Text>
                     <Text style={styles.description}>{detail.description}</Text>
                     <Text style={styles.dealType}>{detail.dealType}</Text>
-
                 </View>
             }
-
         </>
     )
 }
 export default DealIDetail;
 
-
+DealIDetail.propTypes = {
+    item: PropTypes.object.isRequired,
+}
 
 const styles = StyleSheet.create({
     container: {
-        // justifyContent: "center",
         width: "80%",
         margin: "auto",
-        // alignItems: "center",
-        //paddingVertical: 5,
         marginVertical: 5,
 
         borderWidth: 2,
@@ -77,6 +71,10 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 150,
         borderRadius: 10,
+    },
+    useInfo: {
+        marginVertical: 40,
+        marginHorizontal: 40,
     },
     info: {
         padding: 5,

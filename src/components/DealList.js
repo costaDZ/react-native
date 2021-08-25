@@ -4,19 +4,22 @@ import PropTypes from 'prop-types';
 
 import DealItem from './DealItem';
 import DealIDetail from './DealIDetail';
+import SearchBar from './SearchBar';
 
 
 
-
-function DealList({ deals, setdealInfo, dealInfo }) {
+function DealList({ deals, setdealInfo, dealInfo, setsearchDeals }) {
 
 
     if (dealInfo) {
         return (
-            <DealIDetail item={dealInfo} />
+            <DealIDetail item={dealInfo} setdealInfo={setdealInfo} />
         )
-    } else {
-        return (
+    }
+
+    return (
+        <>
+            <SearchBar setsearchDeals={setsearchDeals} />
             <View style={styles.list}>
                 <FlatList
                     data={deals}
@@ -24,9 +27,8 @@ function DealList({ deals, setdealInfo, dealInfo }) {
                     keyExtractor={item => item.key}
                 />
             </View>
-        )
-    }
-
+        </>
+    )
 }
 
 export default DealList;
@@ -40,7 +42,7 @@ DealList.propTypes = {
 
 const styles = StyleSheet.create({
     list: {
-        paddingTop: 50,
+        paddingTop: 30,
         marginVertical: 10,
         flex: 1,
         justifyContent: "center",

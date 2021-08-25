@@ -3,15 +3,9 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 function DealItem({ item, setdealInfo }) {
 
-
-    function setDeal() {
-        setdealInfo(item);
-    }
-
-
     return (
         <TouchableOpacity
-            onPress={() => setDeal()}
+            onPress={() => setdealInfo(item)}
             style={styles.container}
         >
             <Image

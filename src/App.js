@@ -1,75 +1,49 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useRef, useState } from 'react';
-import ajax from './ajax';
+import React, { useState } from 'react';
 
-import { Text, StyleSheet, View, Animated } from 'react-native';
-import DealList from './components/DealList';
+import { Text, StyleSheet, View, TextInput, Button, FlatList } from 'react-native';
+
+import InputList from './components/InputList';
+import Goals from './components/Goals';
 
 export default function App() {
-  const [deals, setdeals] = useState([]);
-  const [searchDeals, setsearchDeals] = useState([]);
 
-  const [dealInfo, setdealInfo] = useState(null);
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [goals, setgoals] = useState([]);
+  const [modal, setmodal] = useState(false);
 
 
-  // function animateTitle() {
-  //     Animated.spring(fadeAnim, {
-  //       toValue: 50,
-  //       duration: 1000
-  //     }).start(() => {
-  //       fadeAnim, {
-  //         toValue: -50,
-  //         duration: 1000
-  //       }
-  //     });
-  // }
+  const addToGoals = (input) => {
+    setgoals(prev => [...goals, input]);
+    setmodal(false);
+  }
 
-  useEffect(() => {
-    //animateTitle();
+  const removeGoal = item => {
+    setgoals(prev => {
+      return prev.filter(goal => goal !== item);
+    })
+  }
 
-    (async function () {
-      const deals = await ajax.getMoviesFromApi();
-      setdeals(deals);
-    })();
-
-  }, [])
-
-
+  console.log(modal);
   return (
-    deals.length ?
-      <DealList
-        deals={searchDeals || deals}
-        setdealInfo={setdealInfo}
-        dealInfo={dealInfo}
-        setsearchDeals={setsearchDeals}
-        searchDeals={searchDeals}
-      /> :
-      <Animated.View style={
-        [
-          styles.loader,
-          {
-            left: fadeAnim
-          }
-        ]
-      }>
-        <Text style={styles.loaderText}>
-          Loading
-        </Text>
-      </Animated.View>
+    <View style={styles.container}>
+      <Button title="Add New Goal" onPress={() => setmodal(!modal)} />
+      <InputList addToGoals={addToGoals} modal={modal} setmodal={setmodal} />
+      <Goals goals={goals} removeGoal={removeGoal} />
+    </View>
   );
 }
 
 
 const styles = StyleSheet.create({
-  loader: {
-    //  backgroundColor: "grey",
+  container: {
+    paddingHorizontal: 20,
+    paddingVertical: 60,
+    borderWidth: 1,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: "center",
   },
-  loaderText: {
-    fontSize: 30,
-  }
+
+  btn: {
+    flex: 1,
+  },
+
 });

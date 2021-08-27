@@ -1,34 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 
-import { Text, StyleSheet, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import Header from './components/Header';
+import StartGameScreen from './screens/StartGameScreen';
+import GameScreen from './screens/GameScreen';
 
-import InputList from './components/InputList';
-import Goals from './components/Goals';
 
 export default function App() {
 
-  const [goals, setgoals] = useState([]);
-  const [modal, setmodal] = useState(false);
+  const [recivedNumber, setrecivedNumber] = useState(null);
 
 
-  const addToGoals = (input) => {
-    setgoals(prev => [...goals, input]);
-    setmodal(false);
-  }
 
-  const removeGoal = item => {
-    setgoals(prev => {
-      return prev.filter(goal => goal !== item);
-    })
-  }
+  let content = !recivedNumber ? <StartGameScreen setrecivedNumber={setrecivedNumber} /> : <GameScreen />;
 
-  console.log(modal);
   return (
     <View style={styles.container}>
-      <Button title="Add New Goal" onPress={() => setmodal(!modal)} />
-      <InputList addToGoals={addToGoals} modal={modal} setmodal={setmodal} />
-      <Goals goals={goals} removeGoal={removeGoal} />
+      <Header title={"Guess A Number"} />
+      {content}
     </View>
   );
 }
@@ -36,13 +26,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
-    paddingVertical: 60,
-    borderWidth: 1,
-    flex: 1,
-  },
-
-  btn: {
     flex: 1,
   },
 

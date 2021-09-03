@@ -27,13 +27,11 @@ export default function App() {
     return null;
   }
 
-
   return (
     <NavigationContainer>
       <DrawerNavigation />
     </NavigationContainer>
   );
-
 }
 
 const styles = StyleSheet.create({

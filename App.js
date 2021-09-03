@@ -1,39 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-//import * as Font from 'expo-font';
+import { useSelector } from 'react-redux';
 
+import { Provider } from 'react-redux';
+import { configureStore, rou } from './Redux/store';
 
-import CategoryScreen from './screens/CategoryScreen';
-import CategoryMealScreen from './screens/CategoryMealScreen';
-import MealDetails from './screens/MealDetails';
-
-
-
-import { useFonts } from 'expo-font';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { DrawerNavigation } from './Navigation/MealsNavigation';
+import ProductDetailsScreen from './screens/shop/ProductDetailsScreen'
 
 
 export default function App() {
 
-  const [loaded] = useFonts({
-    sans_normal: require('./assets/fonts/OpenSans-Regular.ttf'),
-    sans_bold: require('./assets/fonts/OpenSans-Bold.ttf'),
-  });
-
-  if (!loaded) {
-    return null;
-  }
 
 
+
+  const store = configureStore();
   return (
-    <NavigationContainer>
-      <DrawerNavigation />
-    </NavigationContainer>
+    <Provider store={store}>
+      <ProductDetailsScreen />
+      <View>
+        <Text>Hello</Text>
+      </View>
+    </Provider>
   );
-
 }
 
 const styles = StyleSheet.create({
@@ -43,7 +32,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {
-    fontFamily: "sans_normal",
-  }
 });

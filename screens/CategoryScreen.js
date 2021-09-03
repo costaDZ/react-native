@@ -13,7 +13,10 @@ function CategoryScreen({ navigation }) {
         return (
             <TouchableOpacity
                 style={styles.gridItem}
-                onPress={() => navigation.navigate("CategoryMealScreen")}
+                onPress={() => navigation.navigate("CategoryMealScreen", {
+                    test: itemData.item.title,
+                    navigation,
+                })}
             >
                 <View>
                     <Text>{itemData.item.title}</Text>
@@ -33,7 +36,39 @@ function CategoryScreen({ navigation }) {
 
 
 
+
 export default CategoryScreen;
+
+
+
+
+export const ScreenOptions = (route, navigation) => {
+    return {
+        headerRight: (props) => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                    title="favorite"
+                    iconName='ios-star'
+                    onPress={() => console.log(navigation)} />
+            </HeaderButtons>
+        ),
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
     gridContainer: {

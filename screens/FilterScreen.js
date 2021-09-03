@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 
-function FilterScreen({ title }) {
+function FilterScreen() {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>{title}</Text>
+            <Text style={styles.text}>FilterScreen</Text>
         </View>
     )
 }

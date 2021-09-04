@@ -6,24 +6,20 @@ import { useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
 import { configureStore, rou } from './Redux/store';
 
-import ProductDetailsScreen from './screens/shop/ProductDetailsScreen'
-
+import { ScreensNavigator } from './Navigation/MealsNavigation';
+import { NavigationContainer } from '@react-navigation/native';
+//import ProductsOverviewScreen from './screens/shop/ProductsOverviewScreen.js'
 
 export default function App() {
 
 
-
-<<<<<<< HEAD
-=======
-
   const store = configureStore();
->>>>>>> react-native-template
+
   return (
     <Provider store={store}>
-      <ProductDetailsScreen />
-      <View>
-        <Text>Hello</Text>
-      </View>
+      <NavigationContainer>
+        <ScreensNavigator />
+      </NavigationContainer>
     </Provider>
   );
 }
